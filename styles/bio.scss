@@ -1,0 +1,333 @@
+@use '_variables' as *;
+@use '_mixins' as *;
+
+// nav ---------------------------------------
+
+.nav__bio {
+    color: $white;
+    margin: 0;
+    position: relative;
+    font-weight: 700;
+}
+
+.nav__bio::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -14px;
+    width: 100%;
+    height: 3px;
+    background-color: $white;
+    @include tablet {
+        bottom: -43px;
+    }
+}
+
+.nav__show {
+    color: $silver;
+    margin: 0;
+    position: relative;
+}
+
+.nav__show::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -14px;
+    width: 100%;
+    height: 3px;
+    background-color: $white;
+    opacity: 0; 
+    transition: opacity 0.3s ease;
+    @include tablet {
+        bottom: -43px;
+    }
+}
+
+.nav__show:hover::after {
+    opacity: 1; 
+}
+
+.nav__show:hover {
+    color: $white;
+}
+
+// hero ---------------------------------------
+
+.hero__container {
+    background-image: 
+        linear-gradient(rgba(50, 50, 50, 0.5), rgba(50, 50, 50, 0.5)), 
+        url("../assets/images/hero-bio.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 30vh;
+    display: flex;
+    align-items: center; 
+    @include tablet {
+        height: 90vh;
+    }
+    @include desktop {
+        padding: 0 6vw;
+    }
+}
+
+.hero__title {
+    padding: 0 0 0 16px;
+    color: $white;
+    @include tablet {
+        padding: 0 0 0 36px;
+    }
+}
+
+// about ---------------------------------------
+
+.about__title {
+    padding: 24px 0 16px 16px;
+    margin: 0;
+    @include tablet {
+        padding: 48px 0 36px 36px;
+        @include desktop {
+            padding: 48px 6vw 36px 6vw;
+        }
+    }
+}
+
+.about__image {
+    box-sizing: border-box;
+    padding: 0 16px 16px 16px;
+    height: 25%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    @include tablet {
+        padding: 0px 80px 36px 80px;
+        @include desktop {
+            padding: 0px 13vw 36px 13vw;
+        }
+    }
+}
+
+.about__text {
+    padding: 0 16px 16px 16px;
+    margin: 0;
+    @include tablet {
+        padding: 0px 80px 24px 80px;
+        @include desktop {
+            padding: 0px 22vw 24px 13vw;
+        }
+    }
+}
+
+.about__text_reference {
+    padding: 0 16px 16px 16px;
+    margin: 0;
+    @include tablet {
+        padding: 0px 80px 36px 80px;
+        @include desktop {
+            padding: 0px 13vw 36px 13vw;
+        }
+    }
+}
+
+.about__text2_title {
+    padding: 16px 16px 8px 16px;
+    margin: 0;
+    @include tablet {
+        padding: 0px 80px 24px 80px;
+        @include desktop {
+            padding: 0px 13vw 24px 13vw;
+        }
+    }
+}
+
+.about__text2 {
+    padding: 0 16px 16px 16px;
+    @include tablet {
+        padding: 0 80px 36px 80px;
+        display: flex;
+        justify-content: space-between;
+        gap: 24px; 
+        text-align: justify;
+        @include desktop {
+            padding: 0px 13vw 36px 13vw;
+        }
+    }
+}
+
+.gallery__container {
+    background-color: $alabaster;
+}
+
+.gallery__image_container {
+    @include tablet {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px; 
+        max-width: 1200px; 
+        padding: 0 36px 36px 36px;
+        @include desktop {
+            padding: 0 0 36px 0;
+            margin: auto;
+        }
+    }
+}
+
+.gallery__title {
+    padding: 24px 16px 16px 16px;
+    margin: 0;
+    @include tablet {
+        padding: 48px 36px 36px 36px;
+        @include desktop {
+            padding: 48px 6vw 36px 6vw;
+        }
+    }
+}
+
+.gallery__image {
+    padding: 16px 16px 16px 16px;
+    margin: 0;
+    @include tablet {
+        padding: 0;
+    }
+}
+
+.gallery__image {
+    box-sizing: border-box;
+    width: 100vw;
+    height: 25%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+    @include tablet {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    &:hover {
+        filter: grayscale(0%);
+    }
+}
+
+.conversation__container {
+    background-color: $white;
+    padding: 24px 16px 16px 16px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.conversation__form_container {
+    display: flex;
+    border-bottom: solid 1px $mercury;
+    padding: 0 0 16px 0;
+}
+
+.conversation__photo {
+    width: 36px; 
+    height: 36px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    margin: 32px 16px 0 0;
+    @include tablet {
+        width: 48px; 
+        height: 48px; 
+    }
+}
+
+.conversation__form {
+    display: flex;
+    flex-direction: column;
+    width: 75vw;
+}
+
+.conversation__form_description {
+    color: $silver;
+    margin: 12px 0 4px 0;
+    @include tablet {
+        margin: 16px 0 4px 0;
+    }
+}
+
+.conversation__form_name {
+    height: 36px; 
+    font-size: 14px; 
+    font-family: 'Avenir Next Regular', 'Open Sans', sans-serif;
+    @include tablet {
+        height: 48px; 
+    }
+}
+
+.conversation__form_comment {
+    height: 108px; 
+    margin: 0 0 12px 0;
+    padding-top: 10px; 
+    font-family: 'Avenir Next Regular', 'Open Sans', sans-serif; 
+    font-size: 14px; 
+    @include tablet {
+        margin: 0 0 16px 0;
+    }
+}
+
+.conversation__form_name, 
+.conversation__form_comment {
+    width: 100%;
+    border: 1px solid $mercury; 
+    border-radius: 4px; 
+    box-sizing: border-box;
+    background-color: $alabaster; 
+}
+
+.conversation__form_name:focus, 
+.conversation__form_comment:focus {
+    border-color: $bandsite-black; 
+    outline: none; 
+}
+
+.error {
+    border-color: $error-color; 
+}
+
+.conversation__form_name::placeholder,
+.conversation__form_comment::placeholder {
+    color: $bandsite-black; 
+}
+
+.comments__text {
+    max-width: 536px;
+}
+
+.comments__comment {
+    display: flex;
+    padding: 16px 0 16px 0;
+    border-bottom: solid 1px $mercury;
+}
+
+.comments__photo {
+    width: 36px; 
+    height: 36px; 
+    border-radius: 50%; 
+    background-color: $mercury;
+    margin: 16px 16px 0 0;
+    @include tablet {
+        width: 48px; 
+        height: 48px; 
+    }
+}
+
+.comments__head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.comments__text {
+    margin: 0;
+    width: 75vw;
+}
+
+.comments__date {
+    color: $silver;
+}

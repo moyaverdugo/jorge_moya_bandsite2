@@ -1,0 +1,180 @@
+@use '_variables' as *;
+@use '_mixins' as *;
+
+.nav__show {
+    color: $white;
+    margin: 0;
+    position: relative;
+    font-weight: 700;
+}
+
+.nav__show::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -14px;
+    width: 100%;
+    height: 3px;
+    background-color: $white;
+    @include tablet {
+        bottom: -43px;
+    }
+}
+
+.nav__bio {
+    color: $silver;
+    margin: 0;
+    position: relative;
+}
+
+.nav__bio::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -14px;
+    width: 100%;
+    height: 3px;
+    background-color: $white;
+    opacity: 0; 
+    transition: opacity 0.3s ease;
+    @include tablet {
+        bottom: -43px;
+    }
+}
+
+.nav__bio:hover::after {
+    opacity: 1; 
+}
+
+.nav__bio:hover {
+    color: $white;
+}
+
+.hero__container {
+    background-image: 
+        linear-gradient(rgba(50, 50, 50, 0.5), rgba(50, 50, 50, 0.5)), 
+        url("../assets/images/hero-shows.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    @include tablet {
+        height: 90vh;
+    }
+    @include desktop {
+        padding: 0 6vw;
+    }
+}
+
+.hero__title {
+    padding: 0 0 0 16px;
+    margin: 0;
+    color: $white;
+    @include tablet {
+        padding: 0px 0 0 36px;
+    }
+}
+
+.hero__title_album {
+    padding: 24px 0 16px 16px;
+    margin: 0;
+    color: $white;
+    @include tablet {
+        padding: 48px 0 24px 36px;
+    }
+}
+
+iframe {
+    width: 60%;
+    height: 30%;
+    padding: 24px 0 0 16px;
+    @include tablet {
+        padding: 48px 0 0 36px;
+    }
+}
+
+.shows__container {
+    background-color: $white;
+    padding: 24px 16px 16px 16px;
+    @include desktop {
+        display: flex;
+    }
+}
+
+.shows__title {
+    @include desktop {
+        padding: 0 100px 0 100px;
+    }
+}
+
+.shows__list {
+    display: flex;
+    flex-direction: column;
+    @include tablet {
+        display: table;
+        width: 100%;
+        max-width: 1100px;
+    }
+}
+
+.shows__show {
+    border-top: 1px solid $mercury;
+    padding: 16px 0;
+    box-sizing: border-box;
+    @include tablet {
+        display: flex;
+    }
+}
+
+.shows__show:hover {
+    background-color: $alabaster;
+}
+
+.selected {
+    background-color: $mercury;
+}
+
+.shows__headers {
+    display: flex;
+}
+
+.shows__header {
+    display: none;
+    @include tablet {
+        display: table-cell;
+        width: 300px;
+        padding: 0 10px 0 10px;
+        color: $silver;
+    }
+}
+
+.shows__label {
+    color: $silver;
+    margin: 0 0 4px 0;
+    @include tablet {
+        display: none;
+    }
+}
+
+.shows__info {
+    margin: 0 0 16px 0;
+    width: 300px;
+    @include tablet {
+        display: table-cell;
+        padding: 10px;
+        text-align: left;
+    }
+}
+
+.shows__button {
+    padding: 5px 10px;
+    @include tablet {
+        display: table-cell;
+        padding: 10px;
+    }
+}
