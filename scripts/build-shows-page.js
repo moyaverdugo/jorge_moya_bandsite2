@@ -1,13 +1,4 @@
-const shows = [
-    { date: "Mon Sept 09 2024", venue: "Ronald Lane", location: "San Francisco, CA" },
-    { date: "Tue Sept 17 2024", venue: "Pier 3 East", location: "San Francisco, CA" },
-    { date: "Sat Oct 12 2024", venue: "View Lounge", location: "San Francisco, CA" },
-    { date: "Sat Nov 16 2024", venue: "Hyatt agency", location: "San Francisco, CA" },
-    { date: "Fri Nov 29 2024", venue: "Moscow Center", location: "San Francisco, CA" },
-    
-];
-
-
+// defining useful functions that dont use the api -------------------------------------------------
 const createTableHeader = () => {
     const headerRow = document.createElement('div');
     headerRow.classList.add('shows__headers');
@@ -90,5 +81,53 @@ const createShow = (show) => {
 
 const shows__list = document.querySelector('.shows__list');
 createTableHeader();
-shows.forEach(createShow);
 
+// defining functions that use the api -------------------------------------------------
+
+
+import { BandSiteApi } from './band-site-api.js';
+
+// getting the api_key
+const getApiKey = async () => {
+    try {
+      const response = await axios.get('https://unit-2-project-api-25c1595833b2.herokuapp.com/register');
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error registering API key:', error);
+    }
+  };
+
+const apiKey = await getApiKey(); // getting the key
+const api = new BandSiteApi(apiKey); // creating an api class
+
+// display of all shows
+const displayShows = async (api) => {
+    try{
+        const shows__list = document.querySelector('.shows__list');
+        shows__list.innerHTML = ''
+        const showsData = await api.getShows();
+        console.log(showsData);
+
+        //for the Date format
+        const options = { 
+            weekday: 'short', 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+        };
+
+        showsData.forEach((show) => {
+            const showDate = new Date(show.date).toLocaleDateString('en-US', options);
+            createShow({
+                date: showDate,
+                venue: show.venue, 
+                location: show.location
+            });
+        });
+    } catch (error) {
+        console.error('Error creating comments',error);
+    }
+};
+
+displayShows(api);

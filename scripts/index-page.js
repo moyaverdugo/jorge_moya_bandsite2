@@ -1,8 +1,5 @@
-const comments = [
-    { name: "Victor Pinto", date: new Date("11/02/2023"), text: "This is art. This is inexplicable magic expressed in the purest way, everything that makes up this majestic work deserves reverence. Let us appreciate this for what it is and what it contains." },
-    { name: "Christina Cabrera", date: new Date("10/28/2023"), text: "I feel blessed to have seen them in person. What a show! They were just perfection. If there was one day of my life I could relive, this would be it. What an incredible day." },
-    { name: "Isaac Tadesse", date: new Date("10/20/2023"), text: "I can't stop listening. Every time I hear one of their songs - the vocals - it gives me goosebumps. Shivers straight down my spine. What a beautiful expression of creativity. Can't get enough." }
-];
+
+// defining useful functions that dont use the api -------------------------------------------------
 
 const formatTimeAgo = (date) => {
     const now = new Date();
@@ -27,8 +24,7 @@ const formatTimeAgo = (date) => {
     }
 }
 
-
-const createComment = (comment) => {
+const createComment = (comment,api) => {
     
     const comments__name = document.createElement('h3');
     comments__name.className = 'comments__name';
@@ -38,22 +34,49 @@ const createComment = (comment) => {
     comments__date.className = 'comments__date';
     comments__date.textContent = formatTimeAgo(comment.date);
     
-
     const comments__text = document.createElement('p');
     comments__text.className = 'comments__text';
     comments__text.textContent = comment.text;
-  
+    
+    const likeButton = document.createElement('button');
+    likeButton.className = 'comments__like-button';
+    likeButton.textContent = 'Like';
+    likeButton.id = `like-button-${comment.id}`;
+    
+    //crating one event listener per like button in each comment
+    likeButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        await api.likeComment(comment.id);
+        displayComments(api);
+    });
+
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'comments__delete-button';
+    deleteButton.textContent = 'Delete';
+    deleteButton.id = `delete-button-${comment.id}`;
+    
+    // same here, one event listener per delete button
+    deleteButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        await api.deleteComment(comment.id);
+        displayComments(api);
+    });
+
+    const comments__actions = document.createElement('div');
+    comments__actions.className = 'comments__actions';
+    comments__actions.appendChild(likeButton);
+    comments__actions.appendChild(deleteButton);
 
     const comments__head = document.createElement('div');
     comments__head.className = 'comments__head';
     comments__head.appendChild(comments__name);
     comments__head.appendChild(comments__date);
 
-    
     const comments__information = document.createElement('div');
     comments__information.className = 'comments__information';
     comments__information.appendChild(comments__head);
     comments__information.appendChild(comments__text);
+    comments__information.appendChild(comments__actions);
 
 
     const comments__photo = document.createElement('div');
@@ -70,83 +93,96 @@ const createComment = (comment) => {
     comments__container.appendChild(comments__comment);
 };
 
-const displayComments = () => {
+// defining functions that use the api -------------------------------------------------
 
-    const comments__container = document.querySelector('.comments__container');
-    comments__container.innerHTML = ''
-    comments.forEach(createComment);
+
+import { BandSiteApi } from './band-site-api.js';
+
+// getting api_key
+const getApiKey = async () => {
+    try {
+      const response = await axios.get('https://unit-2-project-api-25c1595833b2.herokuapp.com/register');
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error registering API key:', error);
+    }
+  };
+
+// display of all comments
+const displayComments = async (api) => {
+    try{
+        const comments__container = document.querySelector('.comments__container');
+        comments__container.innerHTML = ''
+        const commentsData = await api.getComments();
+        console.log(commentsData);
+        commentsData.forEach((comment) => {
+            createComment({
+                name: comment.name,
+                date: new Date(comment.timestamp), 
+                text: comment.comment,
+                likes: comment.likes,
+                id: comment.id
+            },api);
+        });
+    } catch (error) {
+        console.error('Error creating comments',error);
+    }
 };
 
-displayComments();
+// initializing the api at the beginning and everytime we perform an action
+const initializeApi = async () => {
+    const apiKey = await getApiKey(); // getting the key
+    const api = new BandSiteApi(apiKey); // creating an api class
+
+    displayComments(api);
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const nameInput = document.getElementById('name');
+        const commentInput = document.getElementById('comment');
+
+        const name = nameInput.value.trim();
+        const text = commentInput.value.trim();
+
+        let hasError = false;
+
+        if (!name) {
+            nameInput.classList.add('error');
+            hasError = true;
+        } else {
+            nameInput.classList.remove('error');
+        }
+
+        if (!text) {
+            commentInput.classList.add('error');
+            hasError = true;
+        } else {
+            commentInput.classList.remove('error');
+        }
+
+        if (hasError) {
+            return;
+        }
+
+        try {
+            await api.postComment({ name, comment: text });
+
+            nameInput.value = '';
+            commentInput.value = '';
+
+            displayComments(api);
+        } catch (error) {
+            console.error('Error posting comment:', error);
+        }
+    });
+
+};
+
+// Initializing the API -------------------------------------------------
+
+initializeApi();
 
 
-
-// const form = document.querySelector('form');
-// form.addEventListener('submit', function(event) {
-//     event.preventDefault(); 
-
-//     const name = document.getElementById('name').value;
-//     const text = document.getElementById('comment').value;
-
-//     const date = new Date();
-
-    
-
-//     const newComment = { name: name, date: date , text: text };
-
-//     comments.unshift(newComment);
-
-//     displayComments();
-
-//     form.reset();
-// });
-
-const form = document.querySelector('form');
-form.addEventListener('submit', function(event) {
-    event.preventDefault(); 
-
-    const nameInput = document.getElementById('name');
-    const commentInput = document.getElementById('comment');
-
-    const name = nameInput.value.trim();
-    const text = commentInput.value.trim();
-
-    let hasError = false;
-
-    // Check for empty fields and display error state
-    if (!name) {
-        nameInput.classList.add('error');
-        hasError = true;
-    } else {
-        nameInput.classList.remove('error');
-    }
-
-    if (!text) {
-        commentInput.classList.add('error');
-        hasError = true;
-    } else {
-        commentInput.classList.remove('error');
-    }
-
-    // If there's an error, stop the form from submitting
-    if (hasError) {
-        return;
-    }
-
-    // If no errors, create the new comment and reset the form
-    const date = new Date();
-
-    // const day = String(date.getDate()).padStart(2, '0');
-    // const month = String(date.getMonth() + 1).padStart(2, '0'); 
-    // const year = date.getFullYear();
-
-    // const formattedDate = `${month}/${day}/${year}`;
-
-    const newComment = { name: name, date: date, text: text };
-
-    comments.unshift(newComment);
-
-    displayComments();
-
-    form.reset();
-});

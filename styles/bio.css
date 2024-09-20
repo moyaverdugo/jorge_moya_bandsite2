@@ -378,4 +378,26 @@
 
 .comments__date {
   color: #AFAFAF;
+}
+
+.comments__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.comments__like-button, .comments__delete-button {
+  background-color: #FAFAFA;
+  color: #AFAFAF;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 10px;
+  margin: 0 0 0 10px;
+  width: 60px;
+  height: 25px;
+}
+
+.comments__like-button:hover, .comments__delete-button:hover {
+  background-color: #E1E1E1;
 }/*# sourceMappingURL=bio.css.map */
